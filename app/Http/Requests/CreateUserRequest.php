@@ -46,6 +46,6 @@ class CreateUserRequest extends FormRequest
             'full_name.required' => 'The full name is required.',
             'role_ids.required' => 'The role is a required field.',
             'role_ids.exists' => 'The selected role is invalid.',
-        ];        
+        ];
     }
 }

@@ -11,8 +11,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
-{   
-
+{
     /**
      * The user service instance.
      *
@@ -39,7 +38,6 @@ class UserController extends Controller
     public function index(Request $request)
     {
         try {
-
             $perPage = $request->input('per_page', 30);
             $roleId = $request->input('role_id');
 
@@ -50,7 +48,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             Log::error('Error fetching users by role: ' . $e->getMessage());
             return response()->json(
-                ['error' => 'An error occurred while fetching users.'], 
+                ['error' => 'An error occurred while fetching users.'],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -68,14 +66,13 @@ class UserController extends Controller
             $validatedData = $request->validated();
             $roleIds = $validatedData['role_ids'] ?? [];
             unset($validatedData['role_ids']);
-    
+
             $user = $this->userService->createUser($validatedData, $roleIds);
-    
+
             return (new UserResource($user))
                 ->response()
                 ->setStatusCode(201)
                 ->header('Content-Type', 'application/json');
-
         } catch (\Exception $e) {
             Log::error('Error creating user with role: ' . $e->getMessage());
             return response()->json(['message' => 'Failed to create user', 'error' => $e->getMessage()], 500);

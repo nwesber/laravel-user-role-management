@@ -11,7 +11,6 @@ use App\Repositories\UserRepository;
  */
 class UserService
 {
-
     /**
      * The user repository instance.
      *

@@ -24,20 +24,20 @@ class UserRepository
     {
         try {
             $query = User::query()->with('roles');
-            
+
             if ($roleId !== null) {
                 $query->whereHas('roles', function ($subQuery) use ($roleId) {
                     $subQuery->where('roles.id', (int) $roleId);
                 });
             }
-        
+
             return $query->paginate($perPage);
         } catch (\Exception $e) {
             Log::error('Error fetching users by role: ' . $e->getMessage());
             throw $e;
         }
     }
-    
+
     /**
      * Create a new user with the provided data.
      *
@@ -48,7 +48,7 @@ class UserRepository
     {
         try {
             return User::create($data);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             Log::error('Error creating user: ' . $e->getMessage());
             throw $e;
         }
