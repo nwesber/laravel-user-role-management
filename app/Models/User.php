@@ -20,7 +20,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 
         'email', 
-        'role_id'
     ];
 
     /**
@@ -30,17 +29,8 @@ class User extends Authenticatable
      */
     protected $hidden = [];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'roles' => 'array',
-    ];
-
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class)->withTimestamps();
+        return $this->belongsToMany(Role::class, 'user_roles')->withTimestamps();
     }
 }
