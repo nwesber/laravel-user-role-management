@@ -23,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(UserRepository::class, function ($app) {
             return new UserRepository();
         });
+
+        if ($this->app->environment('local')) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ This is a Laravel application developed using Laravel Sail for local development
 - Docker Desktop (for Windows and macOS users)
 - Docker Engine and Docker Compose (for Linux users)
 - Laravel Sail
+- Laravel Telescope
 
 ## Installation
 
@@ -37,6 +38,11 @@ cp .env.example .env
 
 ```
 
+6. Install and configure Laravel Telescope:
+```
+./vendor/bin/sail artisan telescope:install
+```
+
 ## Usage
 
 Start the development server using Docker:
@@ -58,6 +64,12 @@ Stop the development server:
 You can access the database using your preferred database management tool (e.g., phpMyAdmin) via the following URL:
 
 - [http://localhost:8080](http://localhost:8080)
+
+## Laravel Telescope
+
+Laravel Telescope is a debugging and monitoring tool for Laravel applications. You can access the Telescope dashboard via the following URL:
+
+- [http://localhost/telescope](http://localhost/telescope)
 
 ## Running Tests
 
