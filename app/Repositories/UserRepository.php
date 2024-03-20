@@ -21,7 +21,7 @@ class UserRepository
      * @param int $perPage The number of users per page.
      * @return LengthAwarePaginator Paginated list of users with roles.
      */
-    public function getUsers(int $perPage, int $roleId = null)
+    public function getUsers(int $perPage, int $roleId = null): LengthAwarePaginator
     {
         try {
             $query = User::query()->with('roles');
@@ -46,7 +46,7 @@ class UserRepository
      * @param array $data The data to create the user.
      * @return \App\Models\User The created user instance.
      */
-    public function create(array $data)
+    public function create(array $data): User
     {
         try {
             return User::create($data);
@@ -64,7 +64,7 @@ class UserRepository
      * @return \App\Models\User The updated user instance.
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the user is not found.
      */
-    public function update(int $userId, array $userData)
+    public function update(int $userId, array $userData): User
     {
         try {
             $user = User::findOrFail($userId);
@@ -84,7 +84,7 @@ class UserRepository
      * @return bool True if the user was deleted successfully, otherwise false.
      * @throws \Exception If an error occurs during the deletion process.
      */
-    public function delete(int $userId)
+    public function delete(int $userId): bool
     {
         try {
             $user = User::findOrFail($userId);
