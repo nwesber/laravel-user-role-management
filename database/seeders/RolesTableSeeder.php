@@ -15,10 +15,10 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ['name' => 'Author'],
-            ['name' => 'Editor'],
-            ['name' => 'Subscriber'],
-            ['name' => 'Administrator'],
+            ['id' => 1, 'name' => 'Author'],
+            ['id' => 2, 'name' => 'Editor'],
+            ['id' => 3, 'name' => 'Subscriber'],
+            ['id' => 4, 'name' => 'Administrator'],
         ];
 
         // Insert roles into database

@@ -38,8 +38,22 @@ class UserService
      * @param int $perPage The number of users per page.
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator The paginated list of users.
      */
-    public function getUsersByRolePaginated($roleId = null, $perPage)
+    public function getUsers($perPage, $roleId = null)
     {
-        return $this->userRepository->getUsersByRolePaginated($roleId, $perPage);
+        return $this->userRepository->getUsers($roleId, $perPage);
+    }
+
+    /**
+     * Create a new user with the provided data and assign roles.
+     *
+     * @param array $userData The data to create the user.
+     * @param array $roleIds The role IDs to assign to the user.
+     * @return \App\Models\User|null The created user instance, or null if creation failed.
+     */
+    public function createUser(array $userData, array $roleIds)
+    {
+        $user = $this->userRepository->create($userData);
+        $user->roles()->attach($roleIds);
+        return $user;
     }
 }
