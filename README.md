@@ -2,6 +2,21 @@
 
 This is a Laravel application developed using Laravel Sail for local development. Laravel Sail provides a simple Docker-powered local development environment for Laravel projects.
 
+## Table of Contents
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Database Management](#database-management)
+- [Laravel Telescope](#laravel-telescope)
+- [Running Tests](#running-tests)
+- [Architecture](#architecture)
+- [Deployment Process for Production](#deployment-process-for-production)
+- [.env Configuration](#env-configuration)
+- [Using Laravel Sail with WSL2](#using-laravel-sail-with-wsl2)
+- [Docker Commands](#docker-commands)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Requirements
 
 - Docker Desktop (for Windows and macOS users)
