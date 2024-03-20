@@ -37,9 +37,9 @@ class UserService
      * @param int $perPage The number of users per page.
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator The paginated list of users.
      */
-    public function getUsers($perPage, $roleId = null)
+    public function getUsers(int $perPage, int $roleId = null)
     {
-        return $this->userRepository->getUsers($roleId, $perPage);
+        return $this->userRepository->getUsers($perPage, $roleId);
     }
 
     /**
@@ -54,5 +54,30 @@ class UserService
         $user = $this->userRepository->create($userData);
         $user->roles()->attach($roleIds);
         return $user;
+    }
+
+    /**
+     * Update a user with the provided data.
+     *
+     * @param int $userId The ID of the user to update.
+     * @param array $userData The data to update the user.
+     * @return bool Whether the update was successful or not.
+     */
+    public function updateUser(int $userId, array $userData, array $roleIds)
+    {
+        $user = $this->userRepository->update($userId, $userData);
+        $user->roles()->sync($roleIds);
+        return $user;
+    }
+
+    /**
+     * Delete the user with the provided ID.
+     *
+     * @param int $userId The ID of the user to be deleted.
+     * @return bool True if the user was deleted successfully, otherwise false.
+     */
+    public function deleteUser(int $userId)
+    {
+        return $this->userRepository->delete($userId);
     }
 }

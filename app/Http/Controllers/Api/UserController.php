@@ -4,12 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Controller class for managing user-related actions.
+ *
+ * This controller handles CRUD operations for users, including
+ * fetching user data, creating new users, updating existing users,
+ * deleting users, and assigning user roles.
+ */
 class UserController extends Controller
 {
     /**
@@ -40,17 +49,20 @@ class UserController extends Controller
         try {
             $perPage = $request->input('per_page', 30);
             $roleId = $request->input('role_id');
+            
+            if (!filter_var($roleId, FILTER_VALIDATE_INT)) {
+                $roleId = null;
+            }
 
-            $usersByRole = $this->userService
-                ->getUsers($perPage, $roleId);
+            $usersByRole = $this->userService->getUsers($perPage, $roleId);
 
             return UserResource::collection($usersByRole);
         } catch (\Exception $e) {
             Log::error('Error fetching users by role: ' . $e->getMessage());
-            return response()->json(
-                ['error' => 'An error occurred while fetching users.'],
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
+            return response()->json([
+                'message' => 'Failed to retrieve users',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -75,7 +87,58 @@ class UserController extends Controller
                 ->header('Content-Type', 'application/json');
         } catch (\Exception $e) {
             Log::error('Error creating user with role: ' . $e->getMessage());
-            return response()->json(['message' => 'Failed to create user', 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'message' => 'Failed to create user',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Update an existing user.
+     *
+     * @param UpdateUserRequest $request The request containing the updated user data.
+     * @param User $user The user instance to be updated.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the updated user resource.
+     */
+    public function update(UpdateUserRequest $request, User $user) {
+        try {
+            $validatedData = $request->validated();
+            $roleIds = $validatedData['role_ids'] ?? [];
+            unset($validatedData['role_ids']);
+
+            $user = $this->userService->updateUser($user->id, $validatedData, $roleIds);
+
+            return (new UserResource($user))
+                ->response()
+                ->setStatusCode(200)
+                ->header('Content-Type', 'application/json');
+        } catch (\Exception $e) {
+            Log::error('Error creating user with role: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update user',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Delete an existing user.
+     *
+     * @param User $user The user instance to be deleted.
+     * @return \Illuminate\Http\JsonResponse The JSON response indicating success or failure.
+     */
+    public function destroy(User $user)
+    {
+        try {
+            $this->userService->deleteUser($user->id);
+            return response()->json(['message' => 'User deleted successfully'], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::error('Error deleting user: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to delete user',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
