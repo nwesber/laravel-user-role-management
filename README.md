@@ -35,7 +35,6 @@ cp .env.example .env
 5. Generate an application key:
 ```
 ./vendor/bin/sail artisan key:generate
-
 ```
 
 6. Install and configure Laravel Telescope:
