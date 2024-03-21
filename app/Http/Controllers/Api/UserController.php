@@ -95,6 +95,27 @@ class UserController extends Controller
     }
 
     /**
+     * Display the specified user.
+     *
+     * @param int $id The ID of the user to retrieve.
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        try {
+            $user = $this->userService->getUserById($id);
+
+            return new UserResource($user);
+        } catch (\Exception $e) {
+            Log::error('Error retrieving user: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to retrieve user',
+                'error' => $e->getMessage()
+            ], Response::HTTP_NOT_FOUND); // Or HTTP_INTERNAL_SERVER_ERROR, depending on the nature of the exception
+        }
+    }
+
+    /**
      * Update an existing user.
      *
      * @param UpdateUserRequest $request The request containing the updated user data.

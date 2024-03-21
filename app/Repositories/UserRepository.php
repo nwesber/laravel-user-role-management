@@ -57,6 +57,26 @@ class UserRepository
     }
 
     /**
+     * Retrieves the user with the provided ID.
+     *
+     * This function attempts to find and return the user with the specified ID. If the user cannot be found,
+     * an exception is thrown and logged, indicating that the user with the provided ID does not exist.
+     *
+     * @param int $userId The ID of the user to be retrieved.
+     * @return User The user object if found successfully.
+     * @throws \Exception If the user cannot be found or if an error occurs during the retrieval process.
+     */
+    public function show(int $userId): User
+    {
+        try {
+            return User::findOrFail($userId);
+        } catch (\Exception $exception) {
+            Log::error('Error deleting user: ' . $exception->getMessage());
+            throw $exception;
+        }
+    }
+
+    /**
      * Update the user with the provided ID and data.
      *
      * @param int $userId The ID of the user to update.
@@ -89,9 +109,9 @@ class UserRepository
         try {
             $user = User::findOrFail($userId);
             return $user->delete();
-        } catch (\Exception $e) {
-            Log::error('Error deleting user: ' . $e->getMessage());
-            throw $e;
+        } catch (\Exception $exception) {
+            Log::error('Error deleting user: ' . $exception->getMessage());
+            throw $exception;
         }
     }
 }

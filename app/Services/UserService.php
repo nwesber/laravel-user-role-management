@@ -59,6 +59,21 @@ class UserService
     }
 
     /**
+     * Retrieves a user by their ID.
+     *
+     * This method uses the repository's show function to retrieve a user. If the user is not found,
+     * an exception will be thrown by the repository method.
+     *
+     * @param int $userId The ID of the user to retrieve.
+     * @return User The retrieved user object.
+     * @throws \Exception If the user cannot be found or if an error occurs during the retrieval process.
+     */
+    public function getUserById(int $userId): User
+    {
+        return $this->userRepository->show($userId);
+    }
+
+    /**
      * Update a user with the provided data.
      *
      * @param int $userId The ID of the user to update.
